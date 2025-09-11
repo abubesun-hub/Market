@@ -2,18 +2,19 @@ from pydantic import BaseModel, Field
 from pydantic_settings import BaseSettings
 from decimal import Decimal, ROUND_HALF_UP
 from functools import lru_cache
+import os
 
 
 class Settings(BaseSettings):
-    app_name: str = "Market API"
-    debug: bool = False
+    app_name: str = os.getenv("APP_NAME", "Market API")
+    debug: bool = os.getenv("DEBUG", "false").lower() == "true"
     # Database
-    database_url: str = "postgresql+psycopg://market:market@localhost:5432/market"
+    database_url: str = os.getenv("DATABASE_URL", "postgresql+psycopg://market:market@localhost:5432/market")
 
     # Currency and rounding
-    base_currency: str = "IQD"  # main currency
+    base_currency: str = os.getenv("BASE_CURRENCY", "IQD")  # main currency
     # rounding steps
-    iqd_step: int = 250  # round to nearest 250
+    iqd_step: int = int(os.getenv("IQD_STEP", "250"))  # round to nearest 250
 
     class Config:
         env_file = ".env"

@@ -11,18 +11,43 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-3. Run development server
+3. Configure environment (.env)
+
+```
+DATABASE_URL=postgresql+psycopg://market:market@localhost:5432/market
+APP_NAME=Market API
+DEBUG=false
+BASE_CURRENCY=IQD
+IQD_STEP=250
+```
+
+4. Initialize database (Alembic migrations)
+
+```powershell
+$env:DATABASE_URL="postgresql+psycopg://market:market@localhost:5432/market"
+alembic upgrade head
+```
+
+5. Run development server
 
 ```powershell
 uvicorn app.main:app --reload --host 0.0.0.0 --port 8000
 ```
 
-4. Test endpoints
+6. Test endpoints
 - http://localhost:8000/ -> root
 - http://localhost:8000/settings/health -> health
-- http://localhost:8000/settings -> get settings
+- http://localhost:8000/settings -> get settings (from DB)
+- PUT http://localhost:8000/settings/update { base_currency, iqd_step }
+- POST http://localhost:8000/settings/exchange-rate?rate=1300&effective=2025-09-09
+- GET http://localhost:8000/settings/exchange-rate/latest
 - POST http://localhost:8000/settings/rounding-test?amount=1234.56&currency=IQD
+- GET http://localhost:8000/org/branches
+- POST http://localhost:8000/org/branches { code, name, address }
+- GET http://localhost:8000/org/warehouses?branch_id=1
+- POST http://localhost:8000/org/warehouses { code, name, branch_id }
 
 ## Notes
-- Settings use in-memory defaults for now. Persisting to PostgreSQL will be added next.
+- Settings now persist in PostgreSQL via SQLAlchemy + Alembic.
 - IQD rounding step default is 250, USD fixed to 0.01.
+- Branches/Warehouses added with simple CRUD (list/create).
