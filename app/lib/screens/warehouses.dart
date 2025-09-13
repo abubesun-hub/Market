@@ -64,7 +64,7 @@ class _WarehousesScreenState extends State<WarehousesScreen> {
                 children: [
                   Expanded(
                     child: DropdownButtonFormField<int>(
-                      value: _selectedBranchId,
+                      initialValue: _selectedBranchId,
                       decoration: InputDecoration(labelText: isArabic ? 'الفرع' : 'Branch'),
                       items: [
                         DropdownMenuItem(value: null, child: Text(isArabic ? 'الكل' : 'All')),
@@ -159,7 +159,7 @@ class _WhDialogState extends State<_WhDialog> {
                 validator: (v) => (v == null || v.isEmpty) ? (isArabic ? 'مطلوب' : 'Required') : null,
               ),
               DropdownButtonFormField<int>(
-                value: _branchId,
+                initialValue: _branchId,
                 decoration: InputDecoration(labelText: isArabic ? 'الفرع' : 'Branch'),
                 items: widget.branches
                     .map((b) => DropdownMenuItem(

@@ -40,7 +40,6 @@ class _MarketAppState extends State<MarketApp> {
       theme: ThemeData(
         useMaterial3: true,
         colorSchemeSeed: Colors.indigo,
-        fontFamily: isArabic ? 'NotoNaskhArabic' : null,
       ),
       home: HomeScreen(onToggleLocale: _toggleLocale, isArabic: isArabic),
     );
